@@ -1,0 +1,484 @@
+\documentclass[11pt]{article}
+
+%================================================================
+%================================================================
+%
+%                           Preamble
+%
+%================================================================
+%================================================================
+
+%======================================================
+%
+%                      Packages
+%
+%======================================================
+
+\usepackage[margin=1in]{geometry}  % set the margins to 1in
+\usepackage{graphicx}              % to include figures
+\usepackage{amsmath}               % great math stuff
+\usepackage{amsfonts}              % for blackboard bold, etc
+\usepackage{amsthm}                % better theorem environments
+\usepackage{titlesec}              % format section titles
+
+\usepackage{soul}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage[makeroom]{cancel}
+\usepackage{xcolor}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{tikz}
+\usepackage{setspace}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{xspace}
+\usepackage{multirow}
+
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{color}
+\usepackage[hyphens]{url}
+\usepackage{latexsym}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{algpseudocode}
+\usepackage{verbatim}
+\usepackage{collectbox}
+\usepackage{scrextend}
+\usepackage{array}
+\usetikzlibrary{arrows.meta,shapes,calc}
+
+\DeclareMathOperator{\id}{id}
+
+%======================================================
+%
+%                   New Commands
+%
+%======================================================
+
+\newcommand{\bd}[1]{\mathbf{#1}}  % for bolding symbols
+\newcommand{\RR}{\mathbb{R}}      % for Real numbers
+\newcommand{\ZZ}{\mathbb{Z}}      % for Integers
+\newcommand{\col}[1]{\left[\begin{matrix} #1 \end{matrix} \right]}
+\newcommand{\comb}[2]{\binom{#1^2 + #2^2}{#1+#2}}
+\newcommand{\overfrac}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
+
+\newcommand{\numdash}{\nobreakdash--}
+\newcommand{\blank}[1]{\underline{\hspace{#1}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\B}{\ensuremath{\mathbb{B}}}
+\newcommand{\T}{\ensuremath{\mathbb{T}}}
+\newcommand{\Tau}{\ensuremath{\mathcal{T}}}
+\newcommand{\HS}{\ensuremath{\mathcal{H}}}
+\newcommand{\intom}{\ensuremath{\int_{\Omega}}}
+\newcommand{\fa}{\ensuremath{\ \forall\ }}
+\newcommand{\ex}{\ensuremath{\ \exists\ }}
+\newcommand{\idty}{{\mathchoice {\rm 1\mskip-4mu l} {\rm 1\mskip-4mu l} %
+    {\rm 1\mskip-4.5mu l} {\rm 1\mskip-5mu l}}}
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{corollary}[proposition]{Corollary}
+\newtheorem{conjecture}[proposition]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{example}[proposition]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\newtheorem{claim}[proposition]{Claim}
+\newtheorem{notation}[proposition]{Notation}
+
+\def\Xint#1{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+	\!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$ }
+		\vcenter{\hbox{$#2#3$ }}\kern-.6\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+\makeatletter
+\newcommand{\mybox}{%
+	\collectbox{%
+		\setlength{\fboxsep}{1pt}%
+		\fbox{\BOXCONTENT}%
+	}%
+}
+\makeatother
+
+\newcommand{\newquestion}{\hrulefill\vspace{-0.8\baselineskip}\\\null\hrulefill\vspace{-1.0\baselineskip}}
+\newcommand{\newpart}{\vspace{-0.5\baselineskip}\hrulefill\vspace{-1.3\baselineskip}}
+
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\krnl}{ker}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\LCM}{LCM}
+\DeclareMathOperator{\HCF}{HCF}
+
+%\numberwithin{equation}{chapter}
+
+%======================================================
+%
+%                   Format Specifications
+%
+%======================================================
+
+\everymath{\displaystyle}
+\setlength\parindent{0pt}
+\titleformat{\section}{\normalfont}{\thesection}{}{}
+\titleformat{\subsection}{\normalfont}{\thesubsection}{}{}
+\titleformat{\subsubsection}{\normalfont}{\thesubsubsection}{}{}
+\theoremstyle{plain}
+
+\lstset{
+  numbers=left,
+  numberstyle=\scriptsize,
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single
+}
+
+%================================================================
+%================================================================
+%
+%                          Homework 5
+%
+%================================================================
+%================================================================
+\begin{document}
+  \begin{flushright}
+    Mikhail Gaerlan\\
+    16 March 2018\\
+    MAT 226B Freund
+  \end{flushright}
+\vspace{-1.3\baselineskip}
+
+\newquestion
+%======================================================
+%
+%                    Problem 1
+%
+%======================================================
+\section*{Problem 1}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solvePoisson.m}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/multAp.m}\newpage
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/poissonSolve.m}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework5_1_1.m}
+\begin{center}
+  \begin{tabular}{c|c|c}
+    $\gamma$&Iterations&Relative Residual Norm\\\hline
+    $\begin{array}{l}
+       1\\
+       10\\
+       50\\
+       100\\
+       1000
+     \end{array}$
+            &$\input{../Tables/homework5_1_iters.tex}$&$\input{../Tables/homework5_1_relres.tex}$
+  \end{tabular}
+\end{center}
+\begin{center}
+  \begin{tabular}{|c|c|}
+    \hline
+    \includegraphics[width=0.45\linewidth]{../Figures/homework5_1_1.png}&\includegraphics[width=0.45\linewidth]{../Figures/homework5_1_10.png}\\\hline
+    \includegraphics[width=0.45\linewidth]{../Figures/homework5_1_50.png}&\includegraphics[width=0.45\linewidth]{../Figures/homework5_1_100.png}\\\hline
+    \multicolumn{2}{|c|}{\includegraphics[width=0.45\linewidth]{../Figures/homework5_1_1000.png}}\\\hline
+  \end{tabular}
+\end{center}\newpage
+
+\newquestion
+%======================================================
+%
+%                    Problem 2
+%
+%======================================================
+\section*{Problem 2}
+\begin{eqnarray*}
+  x_1^{\textrm{CG}}&=&x_0+\frac{r_0^Tr_0}{r_0^TAr_0}r_0
+\end{eqnarray*}
+???
+
+\newquestion
+%======================================================
+%
+%                    Problem 3
+%
+%======================================================
+\section*{Problem 3}
+With an initial vector $r$, we can use the Hermitian Lanczos process to find an $H_k$ and $V_k$ such that $A\approx V_kH_kV_k^H$. Then
+\begin{eqnarray*}
+  \left(A\lambda\right)^2&\approx&V_kH_kV_k^H\lambda V_kH_kV_k^H\lambda\\
+                         &\approx&V_kH_kV_k^HV_kH_kV_k^H\lambda^2\\
+     &\approx&V_kH_kH_kV_k^H\lambda^2\\
+     &\approx&V_k\left(H_k\lambda \right)^2V_k^H\\
+  A^j&\approx&V_k\left(H_k\lambda\right)^jV_k^H\\
+  e^{A\lambda}b&\approx&\left(\sum_{j=0}^\infty\frac{1}{j!}V_k\left(H_k\lambda\right)^jV_k^H\right)b\\
+     &\approx&V_k\left(\sum_{j=0}^\infty\frac{1}{j!}\left(H_k\lambda\right)^j\right)V_k^Hb\\
+     &\approx&V_ke^{H_k\lambda}V_k^Hb
+\end{eqnarray*}
+which only requires $k\times k$, $k\times n$, and $n\times k$ matrix multiplications where $k\ll n$.
+
+\newpage
+\newquestion
+%======================================================
+%
+%                    Problem 4
+%
+%======================================================
+\section*{Problem 4}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/arnoldi.m}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework5_4_1.m}
+\begin{center}
+  \begin{tabular}{c|c|c}
+    $\gamma$&Iterations&Relative Residual Norm\\\hline
+    $\begin{array}{l}
+       1\\
+       10\\
+       50\\
+       100\\
+       1000
+     \end{array}$
+            &$\input{../Tables/homework5_4_mins.tex}$&$\input{../Tables/homework5_4_maxes.tex}$
+  \end{tabular}
+\end{center}\newpage
+\begingroup
+\fontsize{8pt}{12pt}\selectfont
+\begin{center} $\gamma = 1$ \end{center}
+\begin{multicols}{2}
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmin}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_mins_1.tex}$
+  \end{tabular}
+  
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmax}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_maxes_1.tex}$
+  \end{tabular}
+\end{multicols}
+\begin{center} $\gamma = 10$ \end{center}
+\begin{multicols}{2}
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmin}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_mins_10.tex}$
+  \end{tabular}
+  
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmax}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_maxes_10.tex}$
+  \end{tabular}
+\end{multicols}
+\begin{center} $\gamma = 50$ \end{center}
+\begin{multicols}{2}
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmin}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_mins_50.tex}$
+  \end{tabular}
+  
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmax}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_maxes_50.tex}$
+  \end{tabular}
+\end{multicols}
+\begin{center} $\gamma = 100$ \end{center}
+\begin{multicols}{2}
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmin}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_mins_100.tex}$
+  \end{tabular}
+  
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmax}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_maxes_100.tex}$
+  \end{tabular}
+\end{multicols}
+\begin{center} $\gamma = 1000$ \end{center}
+\begin{multicols}{2}
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmin}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_mins_1000.tex}$
+  \end{tabular}
+  
+  \begin{tabular}{c}
+    $\lambda_j$ such that $j = \underset{1\leq i\leq k}{\textrm{argmax}}\left(\rho_i\right)$\\\hline
+    $\input{../Tables/homework5_4_maxes_1000.tex}$
+  \end{tabular}
+\end{multicols}
+\endgroup
+\begin{center}
+  \begin{tabular}{|c|c|}
+    \hline
+    \includegraphics[width=0.45\linewidth]{../Figures/homework5_4_1.png}&\includegraphics[width=0.45\linewidth]{../Figures/homework5_4_10.png}\\\hline
+    \includegraphics[width=0.45\linewidth]{../Figures/homework5_4_50.png}&\includegraphics[width=0.45\linewidth]{../Figures/homework5_4_100.png}\\\hline
+    \multicolumn{2}{|c|}{\includegraphics[width=0.45\linewidth]{../Figures/homework5_4_1000.png}}\\\hline
+  \end{tabular}
+\end{center}\newpage
+
+\newquestion
+%======================================================
+%
+%                    Problem 5
+%
+%======================================================
+\section*{Problem 5}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/hermlanc.m}
+
+\newpart
+%--------------------------
+%    Problem 5 Part A
+%--------------------------
+\subsection*{(a)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework5_5_a_1.m}
+\begin{center}
+  \begin{tabular}{c|c}
+    $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+    $\input{../Tables/homework5_5_a_approx.tex}$&$\input{../Tables/homework5_5_a_exact.tex}$
+  \end{tabular}
+\end{center}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 5 Part B
+%--------------------------
+\subsection*{(b)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework5_5_b_1.m}
+\begingroup
+\fontsize{8.5pt}{12pt}\selectfont
+\begin{center}
+  \begin{multicols}{2}
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{$k = 250$ smallest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_min_approx_250.tex}$&$\input{../Tables/homework5_5_b_min_exact_250.tex}$
+    \end{tabular}
+    
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{largest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_max_approx_250.tex}$&$\input{../Tables/homework5_5_b_max_exact_250.tex}$
+    \end{tabular}
+  \end{multicols}
+  \begin{multicols}{2}
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{$k = 500$ smallest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_min_approx_500.tex}$&$\input{../Tables/homework5_5_b_min_exact_500.tex}$
+    \end{tabular}
+    
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{largest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_max_approx_500.tex}$&$\input{../Tables/homework5_5_b_max_exact_500.tex}$
+    \end{tabular}
+  \end{multicols}
+  \newpage
+  \begin{multicols}{2}
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{$k = 1000$ smallest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_min_approx_1000.tex}$&$\input{../Tables/homework5_5_b_min_exact_1000.tex}$
+    \end{tabular}
+    
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{largest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_max_approx_1000.tex}$&$\input{../Tables/homework5_5_b_max_exact_1000.tex}$
+    \end{tabular}
+  \end{multicols}
+  \begin{multicols}{2}
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{$k = 2000$ smallest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_min_approx_2000.tex}$&$\input{../Tables/homework5_5_b_min_exact_2000.tex}$
+    \end{tabular}
+    
+    \begin{tabular}{c|c}
+      \multicolumn{2}{c}{largest}\\
+      $\tilde{\lambda}_k$&$\lambda_k$\\\hline
+      $\input{../Tables/homework5_5_b_max_approx_2000.tex}$&$\input{../Tables/homework5_5_b_max_exact_2000.tex}$
+    \end{tabular}
+  \end{multicols}
+\end{center}
+\endgroup
+
+Depending on the value of $k$, the multiplicity of the eigenvalues will change. However, the accruacy of the smallest and largest values seems to not change much based on the value of $k$.
+
+\end{document}
+%================================================================
+%================================================================
+%
+%                           Templates
+%
+%================================================================
+%================================================================
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+\includegraphics[width=\linewidth]{../Figures/poisson_rhs_1.png}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solvePoisson.m}
+
+\newquestion
+%======================================================
+%
+%                    Problem n
+%
+%======================================================
+\section*{Problem n}
+
+\newpart
+%--------------------------
+%    Problem n Part A
+%--------------------------
+\subsection*{(a)}
+
+\newpart
+%--------------------------
+%    Problem n Part B
+%--------------------------
+\subsection*{(b)}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+%======================================================
+%
+%               Appendix: Problem n
+%
+%======================================================
+%--------------------------
+%  Appendix: P n Part A
+%--------------------------
+\subsection*{Problem n Part A}
+
+\newpage
+%--------------------------
+%  Appendix: P n Part B
+%--------------------------
+\subsection*{Problem n Part B}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------

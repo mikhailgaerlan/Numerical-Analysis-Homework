@@ -1,0 +1,591 @@
+\documentclass[11pt]{article}
+
+%================================================================
+%================================================================
+%
+%                           Preamble
+%
+%================================================================
+%================================================================
+
+%======================================================
+%
+%                      Packages
+%
+%======================================================
+
+\usepackage[margin=1in]{geometry}  % set the margins to 1in
+\usepackage{graphicx}              % to include figures
+\usepackage{amsmath}               % great math stuff
+\usepackage{amsfonts}              % for blackboard bold, etc
+\usepackage{amsthm}                % better theorem environments
+\usepackage{titlesec}              % format section titles
+
+\usepackage{soul}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage[makeroom]{cancel}
+\usepackage{xcolor}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{tikz}
+\usepackage{setspace}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{xspace}
+
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{color}
+\usepackage[hyphens]{url}
+\usepackage{latexsym}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{algpseudocode}
+\usepackage{verbatim}
+\usepackage{collectbox}
+\usepackage{scrextend}
+\usetikzlibrary{arrows,shapes}
+
+\DeclareMathOperator{\id}{id}
+
+%======================================================
+%
+%                   New Commands
+%
+%======================================================
+
+\newcommand{\bd}[1]{\mathbf{#1}}  % for bolding symbols
+\newcommand{\RR}{\mathbb{R}}      % for Real numbers
+\newcommand{\ZZ}{\mathbb{Z}}      % for Integers
+\newcommand{\col}[1]{\left[\begin{matrix} #1 \end{matrix} \right]}
+\newcommand{\comb}[2]{\binom{#1^2 + #2^2}{#1+#2}}
+\newcommand{\overfrac}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
+
+\newcommand{\numdash}{\nobreakdash--}
+\newcommand{\blank}[1]{\underline{\hspace{#1}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\B}{\ensuremath{\mathbb{B}}}
+\newcommand{\T}{\ensuremath{\mathbb{T}}}
+\newcommand{\Tau}{\ensuremath{\mathcal{T}}}
+\newcommand{\HS}{\ensuremath{\mathcal{H}}}
+\newcommand{\intom}{\ensuremath{\int_{\Omega}}}
+\newcommand{\fa}{\ensuremath{\ \forall\ }}
+\newcommand{\ex}{\ensuremath{\ \exists\ }}
+\newcommand{\idty}{{\mathchoice {\rm 1\mskip-4mu l} {\rm 1\mskip-4mu l} %
+    {\rm 1\mskip-4.5mu l} {\rm 1\mskip-5mu l}}}
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{corollary}[proposition]{Corollary}
+\newtheorem{conjecture}[proposition]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{example}[proposition]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\newtheorem{claim}[proposition]{Claim}
+\newtheorem{notation}[proposition]{Notation}
+
+\def\Xint#1{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+	\!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$ }
+		\vcenter{\hbox{$#2#3$ }}\kern-.6\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+\makeatletter
+\newcommand{\mybox}{%
+	\collectbox{%
+		\setlength{\fboxsep}{1pt}%
+		\fbox{\BOXCONTENT}%
+	}%
+}
+\makeatother
+
+\newcommand{\newquestion}{\hrulefill\vspace{-0.8\baselineskip}\\\null\hrulefill\vspace{-1.0\baselineskip}}
+\newcommand{\newpart}{\vspace{-0.5\baselineskip}\hrulefill\vspace{-1.3\baselineskip}}
+
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\krnl}{ker}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\LCM}{LCM}
+\DeclareMathOperator{\HCF}{HCF}
+
+%\numberwithin{equation}{chapter}
+
+%======================================================
+%
+%                   Format Specifications
+%
+%======================================================
+
+\everymath{\displaystyle}
+\setlength\parindent{0pt}
+\titleformat{\section}{\normalfont}{\thesection}{}{}
+\titleformat{\subsection}{\normalfont}{\thesubsection}{}{}
+\theoremstyle{plain}
+
+\lstset{
+  numbers=left,
+  numberstyle=\scriptsize,
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single
+}
+
+%================================================================
+%================================================================
+%
+%                          Homework #
+%
+%================================================================
+%================================================================
+\begin{document}
+  \begin{flushright}
+    Mikhail Gaerlan\\
+    23 January 2018\\
+    MAT 226B Freund
+  \end{flushright}
+\vspace{-1.3\baselineskip}
+\newquestion
+%======================================================
+%
+%                    Problem 1
+%
+%======================================================
+\section*{Problem 1}
+Let $0\leq\alpha\leq1$ and $A_\alpha=\left[a_{jk}^\alpha\right]$. Then
+\begin{equation*}
+  ee^{T}=\left[
+    \begin{array}{cccc}
+      1 & 1 & \cdots & 1\\
+      1 & 1 & \cdots & 1\\
+      \vdots & \vdots & \ddots & \vdots\\
+      1 & 1 & \cdots & 1
+    \end{array}
+  \right].
+\end{equation*}
+Thus, $a_{jk}^\alpha=\alpha a_{jk}+\frac{1}{n}\left(1-\alpha\right]$. Also, $\alpha_{jk}^\alpha\geq0$ since $0\leq\alpha\leq1$, and so
+\begin{equation*}
+  \sum_{k=1}^na_{jk}^\alpha=\sum_{k=1}^n\left(\alpha a_{jk}+\frac{1}{n}\left(1-\alpha\right)\right)=n\frac{1}{n}\left(1-\alpha\right)+\alpha\sum_{k=1}^na_{jk}=1-\alpha+\alpha=1.
+\end{equation*}
+Therefore, $A_\alpha$ is row-stochastic.
+
+\newquestion
+%======================================================
+%
+%                    Problem 2
+%
+%======================================================
+\section*{Problem 2}
+
+The PageRank vector $x$ is given by the formula $A^{T}x=x$ where $A$ is given by the following matrix:
+\begin{equation*}
+  A=\left[
+    \begin{array}{cccccccccc}
+    % 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 &10\\
+      0 & 0 & 0 & 0 & 1/2 & 0 & 1/2 & 0 & 0 & 0\\ %1
+      0 & 0 & 0 & 0 & 0 & 1/3 & 1/3 & 0 & 1/3 & 0\\ %2
+      1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10\\ %3
+      0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\ %4
+      0 & 0 & 0 & 0 & 0 & 0 & 1/3 & 0 & 1/3 & 1/3\\ %5
+      1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10\\ %6
+      1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10 & 1/10\\ %7
+      0 & 0 & 1/4 & 1/4 & 0 & 0 & 1/4 & 0 & 1/4 & 0\\ %8
+      0 & 1/5 & 0 & 1/5 & 0 & 0 & 1/5 & 1/5 & 0 & 1/5\\ %9
+      1/5 & 0 & 1/5 & 1/5 & 0 & 0 & 1/5 & 0 & 1/5 & 0   %10
+    \end{array}
+  \right].
+\end{equation*}
+The following \MATLAB code was used to solve for $x$ and rank the eigenvalues.
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_2.m}
+\begin{equation*}
+  x=\left[\input{x.tex}\right]
+\end{equation*}
+Thus the ranking of the websites from most to least important is given by the row vector:
+\begin{equation*}
+  b = \left[\input{sort.tex}\right].
+\end{equation*}
+
+\newquestion
+%======================================================
+%
+%                    Problem 3
+%
+%======================================================
+\section*{Problem 3}
+
+\newpart
+%--------------------------
+%    Problem 3 Part A
+%--------------------------
+\subsection*{(a)}
+Let $x\in\R^n$. Then,
+\begin{eqnarray*}
+  \left\Vert A^Tx\right\Vert_1&=&\sum_{k=1}^n\left\vert\sum_{j=1}^na_{jk}x_j\right\vert\\
+                           &\leq&\sum_{k=1}^n\sum_{j=1}^n\left\vert a_{jk}\right\vert\left\vert x_j\right\vert\\
+                           &=&\sum_{j=1}^n\left\vert x_j\right\vert\sum_{k=1}^n\left\vert a_{jk}\right\vert\\
+                           &=&\sum_{j=1}^n\left\vert x_j\right\vert\\
+                           &=&\left\Vert x\right\Vert_1
+\end{eqnarray*}
+Since, $\left\Vert A^Tx\right\Vert_1\leq\left\Vert x\right\Vert_1\;\forall\, x\in\R^n$, then if $\lambda$ is an eigenvalue of $A^T$, then $\left\vert\lambda\right\vert\leq1$. Since $A$ and $A^T$ have the same eigenvalues, then $\lambda$ is an eigenvalue of $A$ and $\left\vert\lambda\right\vert\leq1$.
+
+\newpart
+%--------------------------
+%    Problem 3 Part B
+%--------------------------
+\subsection*{(b)}
+Since $a_{jk},x_j^{(0)}\geq0$, then $x^{(i)}\geq0$ by closure of the nonnegative real numbers under addition and multiplication. Also, since $x^{(0)}\geq0$, then the inequality from 3.(a) becomes an equality, so $\sum_{j=1}^nx_j^{(i)}=\sum_{j=1}^nx_j^{(0)}\;\forall\, i\geq0$.
+
+\newpart
+%--------------------------
+%    Problem 3 Part C
+%--------------------------
+\subsection*{(c)}
+By induction, $x^{(i)}=X\Lambda^i X^{-1}x^{(0)}$ where $\Lambda, \Lambda^i$ are given by the following matrices:
+\begin{equation*}
+  \Lambda=\left[
+    \begin{array}{cccc}
+      \lambda_1 & 0 & \cdots & 0\\
+      0 & \lambda_2 & \ddots & \vdots\\
+      \vdots & \ddots & \ddots & 0\\
+      0 & \cdots & 0 & \lambda_n
+    \end{array}
+  \right]\textrm{and }
+  \Lambda^i=\left[
+    \begin{array}{cccc}
+      \lambda_1^i & 0 & \cdots & 0\\
+      0 & \lambda_2^i & \ddots & \vdots\\
+      \vdots & \ddots & \ddots & 0\\
+      0 & \cdots & 0 & \lambda_n^i
+    \end{array}
+  \right]
+\end{equation*}
+Therefore,
+\begin{eqnarray*}
+  \lim_{i\to\infty}x^{(i)}&=&\lim_{i\to\infty}X\Lambda^iX^{-1}x^{(0)}\\
+                          &=&X\left(\lim_{i\to\infty}\Lambda^i\right)X^{-1}x^{(0)}
+\end{eqnarray*}
+Since $\left\vert\lambda_j\right\vert<1\;\forall\,2\leq j\leq n$, then $\lim_{i\to\infty}\lambda_j^i=
+\left\{\begin{array}{cr}
+        1 & \textrm{if }j = 1\\
+        0 & \textrm{if }j > 1
+      \end{array}
+    \right.$. Thus $\lim_{i\to\infty}\Lambda^i$ converges. Since $x^{i}\geq0\;\forall\,i$, then $x\geq0$ by the properties of limits. Also, since $\sum_{j=1}^nx_j^{(i)}=\sum_{j=1}^nx_j^{(0)}\;\forall\, i\geq0$, then $x^{(0)}\ne0\implies x\ne0$.
+
+\newquestion
+%======================================================
+%
+%                    Problem 4
+%
+%======================================================
+\section*{Problem 4}
+
+\newpart
+%--------------------------
+%    Problem 4 Part A
+%--------------------------
+\subsection*{(a)}
+For the case $n=10$ from Problem 2, the code
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_4_a_1.m}\newpage
+where the functions \texttt{graphx} and \texttt{graphax} are defined as the following
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{graphx.m}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{graphax.m}
+has the following output
+\begin{equation*}
+  \begin{array}{rclcrcl}
+    y&=&\left[\input{graphy.tex}\right]\\
+    y_{0.5}&=&\left[\input{graphy05.tex}\right]&&y_{0.85}&=&\left[\input{graphy085.tex}\right]
+  \end{array}
+\end{equation*}
+For the case $n=685230$, the following code
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_4_a.m}
+resulted in the output
+\begin{equation*}
+  \begin{array}{c@{\hspace{0cm}}c@{\hspace{0cm}}lc@{\hspace{0cm}}c@{\hspace{0cm}}l}
+    \left[
+    \begin{array}{c}
+      y_2\\
+      y_{222222}\\
+      y_{300000}\\
+      y_{400000}\\
+    \end{array}
+    \right]&=&\left[\input{www0graphy.tex}\right],&
+                                                    \left[
+                                                    \begin{array}{c}
+                                                      y_{0.85,2}\\
+                                                      y_{0.85,222222}\\
+                                                      y_{0.85,300000}\\
+                                                      y_{0.85,400000}\\
+                                                    \end{array}
+    \right]&=&\left[\input{www0graphy85.tex}\right]
+  \end{array}
+\end{equation*}
+\newpart
+%--------------------------
+%    Problem 4 Part B
+%--------------------------
+\subsection*{(b)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{powerm.m}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 4 Part C
+%--------------------------
+\subsection*{(c)}
+The following code was used to compute the dominant eigenvalue $\lambda$, the iteration count $k$, the \textit{relative eigenvalue residual} $\epsilon$, and the corresponding eigenvector $x$:
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_4_c.m}
+with the output given by
+\begin{eqnarray*}
+  \begin{array}{rclcrcl}
+    \left[\begin{array}{c}
+            \lambda_1\\
+            k_1\\
+            \epsilon_1
+          \end{array}
+    \right]
+ &=&\left[\input{powerm.tex}\right]&&\left[\begin{array}{c}
+                                             \lambda_2\\
+                                             k_2\\
+                                             \epsilon_2
+                                           \end{array}
+    \right]&=&\left[\input{powerm2.tex}\right]\\
+    x&=&\left[\input{powermx.tex}\right]&&x&=&\left[\input{powerm2x.tex}\right].
+  \end{array}
+\end{eqnarray*}
+Thus the ranking of the websites from most to least important is given by the row vectors:
+\begin{eqnarray*}
+  b_1&=&\left[\input{sortp.tex}\right].\\
+  b_2&=&\left[\input{sortp2.tex}\right].
+\end{eqnarray*}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 4 Part D
+%--------------------------
+\subsection*{(d)}
+The following code was used
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_4_d.m}
+where the function \texttt{poweram} is given by
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{poweram.m}
+For $x_1=e$ and $x_2=x_0$, the results are
+\begin{equation*}
+  \begin{array}{rclcrcl}
+    \left[\begin{array}{c}
+            \lambda_1\\
+            k_1\\
+            \varepsilon_1
+          \end{array}
+    \right]
+ &=&\left[\input{www0power.tex}\right]&&\left[\begin{array}{c}
+                                             \lambda_2\\
+                                             k_2\\
+                                             \epsilon_2
+                                           \end{array}
+    \right]&=&\left[\input{www0power0.tex}\right]
+  \end{array}
+\end{equation*}
+The convergence of the power method for this case is much slower than the $n=10$ case. The algorithm reached the maximum iterations instead of reaching the residual epsilon.
+For $A_{0.85}^T$, the output is given by
+\begin{equation*}
+  \begin{array}{rclcrcl}
+    \left[\begin{array}{c}
+            \lambda_1\\
+            k_1\\
+            \varepsilon_1
+          \end{array}
+    \right]
+ &=&\left[\input{www0powera.tex}\right]&&\left[\begin{array}{c}
+                                             \lambda_2\\
+                                             k_2\\
+                                             \epsilon_2
+                                           \end{array}
+    \right]&=&\left[\input{www0powera0.tex}\right]
+  \end{array}
+\end{equation*}
+Thus the ranking of the top 10  websites from most to least important is given by the row vectors:
+\begin{equation*}
+  \begin{array}{r@{\hspace{0cm}}c@{\hspace{0cm}}l}
+    b_1&=&\left[\input{www0sorta.tex}\right]\\
+    b_2&=&\left[\input{www0sorta0.tex}\right].
+  \end{array}
+\end{equation*}
+
+\newquestion
+%======================================================
+%
+%                    Problem 5
+%
+%======================================================
+\section*{Problem 5}
+
+\newpart
+%--------------------------
+%    Problem 5 Part A
+%--------------------------
+\subsection*{(a)}
+The eigenvalues of $C$ can be found by \texttt{conj(fft(c'))} by the following formulas.
+\begin{eqnarray*}
+  \left[Fc^T\right]_j&=&\sum_{k=0}^{n-1}c_k\exp\left(\frac{-2\pi i}{n}jk\right),\quad\forall\,0\leq j\leq n-1\\
+  \overline{\left[Fc^T\right]_j}&=&\sum_{k=0}^{n-1}c_k\exp\left(\frac{2\pi i}{n}jk\right),\quad\forall\,0\leq j\leq n-1
+\end{eqnarray*}
+
+\newpart
+%--------------------------
+%    Problem 5 Part B
+%--------------------------
+\subsection*{(b)}
+
+Let 
+\begin{equation*}
+  \Lambda=\left[
+    \begin{array}{cccc}
+      \lambda_0 & 0 & \cdots & 0\\
+      0 & \lambda_1 & \ddots & \vdots\\
+      \vdots & \ddots & \ddots & 0\\
+      0 & \cdots & 0 & \lambda_{n-1}
+    \end{array}
+  \right]
+\end{equation*}
+and $\texttt{lambda}=\texttt{conj(fft(c'))}$. Then $\Lambda Fx=\texttt{lambda.*fft(x)}$. Also,
+\begin{eqnarray*}
+  \left[\overline{F}x\right]_{j=0,1,\dots,n-1}&=&\left[\sum_{k=0}^{n-1}x_k\exp\left(\frac{2\pi i}{n}jk\right)\right]_{j,k=0,1,\dots,n-1}\\
+                                              &=&\overline{\left[\sum_{k=0}^{n-1}\overline{x_k}\exp\left(\frac{-2\pi i}{n}jk\right)\right]}_{j=0,1,\dots,n-1}\\
+                                              &=&\overline{\left[F\overline{x}\right]}_{j=0,1,\dots,n-1}\\
+                                              &=&\texttt{conj(fft(conj(x)))}
+\end{eqnarray*}
+Therefore, $y=Cx=\frac{1}{n}\overline{F}\Lambda Fx=\texttt{conj(fft(conj(fft(c')).*fft(x))))/length(x)}$. Since $y$ is real, then $y=\texttt{fft(conj(fft(c')).*fft(x)))/length(x)}$. The following \MATLAB code was written to compare the two methods of multiplying a circulant matrix:
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_5_b.m}
+where the function \texttt{circulant} is given by
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{circulant.m}
+with the following output
+\begin{eqnarray*}
+  \texttt{C*x}&=&\left[\input{Cx.tex}\right]\\
+  \texttt{circulant(c,x)}&=&\left[\input{circulantx.tex}\right].
+\end{eqnarray*}
+
+\newpart
+%--------------------------
+%    Problem 5 Part C
+%--------------------------
+\subsection*{(c)}
+If we extend the Toeplitz matrix such that $t_j=t_{j+1-2n},t_{-j}=t_{2n-1-j}$ for $n< j\leq 2n-1$, then by definition we have a unique, circulant matrix such that $c_j:=t_j$.
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 5 Part D
+%--------------------------
+\subsection*{(d)}
+The following \MATLAB function uses part (c) and part (b) to compute $y=Tx$:
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{toeplitz.m}
+
+\newpart
+%--------------------------
+%    Problem 5 Part E
+%--------------------------
+\subsection*{(e)}
+The following \MATLAB code was written to compare the two methods of multiplying a Toeplitz matrix
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_5_e.m}
+and has the following output
+\begin{eqnarray*}
+  \texttt{T*x}&=&\left[\input{Tx.tex}\right]\\
+  \texttt{toeplitz(t,x)}&=&\left[\input{toeplitzx.tex}\right].
+\end{eqnarray*}
+For the $n=500000$ case, the code is
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{homework1_5_e2.m}
+and has the output
+\begin{equation*}
+  \left[\begin{array}{c}
+          y_1\\
+          y_{100000}\\
+          y_{200000}\\
+          y_{300000}\\
+          y_{400000}\\
+          y_{500000}\\
+          \textstyle \sum_{j=1}^ny_j\\
+          \left\Vert y\right\Vert_2
+        \end{array}
+      \right]=\left[\input{t_and_x.tex}\right].
+\end{equation*}
+
+\end{document}
+%================================================================
+%================================================================
+%
+%                           Templates
+%
+%================================================================
+%================================================================
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+\newquestion
+%======================================================
+%
+%                    Problem n
+%
+%======================================================
+\section*{Problem n}
+
+\newpart
+%--------------------------
+%    Problem n Part A
+%--------------------------
+\subsection*{(a)}
+
+\newpart
+%--------------------------
+%    Problem n Part B
+%--------------------------
+\subsection*{(b)}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+%======================================================
+%
+%               Appendix: Problem n
+%
+%======================================================
+%--------------------------
+%  Appendix: P n Part A
+%--------------------------
+\subsection*{Problem n Part A}
+
+\newpage
+%--------------------------
+%  Appendix: P n Part B
+%--------------------------
+\subsection*{Problem n Part B}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------

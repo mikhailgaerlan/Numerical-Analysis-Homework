@@ -1,0 +1,647 @@
+\documentclass[11pt]{article}
+
+%================================================================
+%================================================================
+%
+%                           Preamble
+%
+%================================================================
+%================================================================
+
+%======================================================
+%
+%                      Packages
+%
+%======================================================
+
+\usepackage[margin=1in]{geometry}  % set the margins to 1in
+\usepackage{graphicx}              % to include figures
+\usepackage{amsmath}               % great math stuff
+\usepackage{amsfonts}              % for blackboard bold, etc
+\usepackage{amsthm}                % better theorem environments
+\usepackage{titlesec}              % format section titles
+
+\usepackage{soul}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage[makeroom]{cancel}
+\usepackage{xcolor}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{tikz}
+\usepackage{setspace}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{xspace}
+\usepackage{multirow}
+
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{color}
+\usepackage[hyphens]{url}
+\usepackage{latexsym}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{algpseudocode}
+\usepackage{verbatim}
+\usepackage{collectbox}
+\usepackage{scrextend}
+\usepackage{array}
+\usetikzlibrary{arrows.meta,shapes,calc}
+
+\DeclareMathOperator{\id}{id}
+
+%======================================================
+%
+%                   New Commands
+%
+%======================================================
+
+\newcommand{\bd}[1]{\mathbf{#1}}  % for bolding symbols
+\newcommand{\RR}{\mathbb{R}}      % for Real numbers
+\newcommand{\ZZ}{\mathbb{Z}}      % for Integers
+\newcommand{\col}[1]{\left[\begin{matrix} #1 \end{matrix} \right]}
+\newcommand{\comb}[2]{\binom{#1^2 + #2^2}{#1+#2}}
+\newcommand{\overfrac}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
+
+\newcommand{\numdash}{\nobreakdash--}
+\newcommand{\blank}[1]{\underline{\hspace{#1}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\B}{\ensuremath{\mathbb{B}}}
+\newcommand{\T}{\ensuremath{\mathbb{T}}}
+\newcommand{\Tau}{\ensuremath{\mathcal{T}}}
+\newcommand{\HS}{\ensuremath{\mathcal{H}}}
+\newcommand{\intom}{\ensuremath{\int_{\Omega}}}
+\newcommand{\fa}{\ensuremath{\ \forall\ }}
+\newcommand{\ex}{\ensuremath{\ \exists\ }}
+\newcommand{\idty}{{\mathchoice {\rm 1\mskip-4mu l} {\rm 1\mskip-4mu l} %
+    {\rm 1\mskip-4.5mu l} {\rm 1\mskip-5mu l}}}
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{corollary}[proposition]{Corollary}
+\newtheorem{conjecture}[proposition]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{example}[proposition]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\newtheorem{claim}[proposition]{Claim}
+\newtheorem{notation}[proposition]{Notation}
+
+\def\Xint#1{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+	\!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$ }
+		\vcenter{\hbox{$#2#3$ }}\kern-.6\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+\makeatletter
+\newcommand{\mybox}{%
+	\collectbox{%
+		\setlength{\fboxsep}{1pt}%
+		\fbox{\BOXCONTENT}%
+	}%
+}
+\makeatother
+
+\newcommand{\newquestion}{\hrulefill\vspace{-0.8\baselineskip}\\\null\hrulefill\vspace{-1.0\baselineskip}}
+\newcommand{\newpart}{\vspace{-0.5\baselineskip}\hrulefill\vspace{-1.3\baselineskip}}
+
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\krnl}{ker}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\LCM}{LCM}
+\DeclareMathOperator{\HCF}{HCF}
+
+%\numberwithin{equation}{chapter}
+
+%======================================================
+%
+%                   Format Specifications
+%
+%======================================================
+
+\everymath{\displaystyle}
+\setlength\parindent{0pt}
+\titleformat{\section}{\normalfont}{\thesection}{}{}
+\titleformat{\subsection}{\normalfont}{\thesubsection}{}{}
+\titleformat{\subsubsection}{\normalfont}{\thesubsubsection}{}{}
+\theoremstyle{plain}
+
+\lstset{
+  numbers=left,
+  numberstyle=\scriptsize,
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single
+}
+
+%================================================================
+%================================================================
+%
+%                          Homework 3
+%
+%================================================================
+%================================================================
+\begin{document}
+  \begin{flushright}
+    Mikhail Gaerlan\\
+    21 February 2018\\
+    MAT 226B Freund
+  \end{flushright}
+\vspace{-1.3\baselineskip}
+
+
+\newquestion
+%======================================================
+%
+%                    Problem 1
+%
+%======================================================
+\section*{Problem 1}
+
+\newpart
+%--------------------------
+%    Problem 1 Part A
+%--------------------------
+\subsection*{(a)}
+Let $x_j=hj$, $y_k=hk$, and $h=1/\left(m+1\right)$ for $j,k=1,\dots,m$, and let $b_{0j}=b_0\left(x_j\right)$, $b_{1j}=b_1\left(x_j\right)$, $c_{0k}=c_0\left(y_k\right)$, and $c_{1k}=c_1\left(y_j\right)$. To include the boundary conditions, we include new matrices $B\in\R^{m\times m}$ and $C\in\R^{m\times m}$ such that
+\begin{equation*}
+  B=\left[
+    \begin{array}{cccc}
+      b_{01}&b_{02}&\cdots&b_{0m}\\
+      0&0&\cdots&0\\
+      \vdots&\vdots&&\vdots\\
+      0&0&\cdots&0\\
+      b_{11}&b_{12}&\cdots&b_{1m}\\
+    \end{array}
+  \right]\qquad C=\left[
+  \begin{array}{ccccc}
+    c_{01}&0&\cdots&0&c_{11}\\
+    c_{02}&0&\cdots&0&c_{12}\\
+    \vdots&\vdots&&\vdots&\vdots\\
+    c_{0m}&0&\cdots&0&c_{1m}\\
+  \end{array}
+  \right].
+\end{equation*}
+Then, $T_mV+VT_m-B-C=h^2F$, so
+\begin{eqnarray*}
+  F'&=&Z^T\left(h^2F+B+C\right)Z\\
+  v_{jk}'&=&\frac{f_{jk}'}{\lambda_j+\lambda_k},\quad\textrm{for all }j,k=1,2,\dots,m\\
+  V&=&ZV'Z^T
+\end{eqnarray*}
+
+\newpart
+%--------------------------
+%    Problem 1 Part B
+%--------------------------
+\subsection*{(b)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solvePoisson.m}
+
+\newpart
+%--------------------------
+%    Problem 1 Part C
+%--------------------------
+\subsection*{(c)}
+\begin{eqnarray*}
+  v\left(x,0\right)&=&b_0\left(x\right)=0\\
+  v\left(x,1\right)&=&b_1\left(x\right)=\sin\left(\beta\pi x\right)\cos\left(\gamma \pi\right)\\
+  v\left(0,y\right)&=&c_0\left(y\right)=0\\
+  v\left(1,y\right)&=&c_1\left(y\right)=y^\alpha\sin\left(\beta\pi\right)\cos\left(\gamma\pi y\right)\\
+  \frac{\partial v\left(x,y\right)}{\partial x}&=&\beta\pi y^\alpha\sin\left(\beta\pi x\right)\sin\left(\gamma\pi y\right)\\
+  \frac{\partial^2v\left(x,y\right)}{\partial x^2}&=&-\beta^2\pi^2y^\alpha\sin\left(\beta\pi x\right)\cos\left(\gamma\pi y\right)\\
+  \frac{\partial v\left(x,y\right)}{\partial y}&=&\alpha  y^{\alpha -1} \sin (\beta  \pi  x) \cos (\gamma  \pi  y)-\gamma  \pi  y^{\alpha} \sin (\beta  \pi  x) \sin (\gamma  \pi  y)\\
+  \frac{\partial^2v\left(x,y\right)}{\partial y^2}&=&\alpha  (\alpha -1) y^{\alpha -2} \sin (\beta  \pi  x) \cos (\gamma  \pi  y)-\alpha \gamma  \pi  y^{\alpha -1} \sin (\beta  \pi  x) \sin (\gamma  \pi  y)\\
+                   &&-\gamma  \pi \alpha  y^{\alpha -1} \sin (\beta  \pi  x) \sin (\gamma  \pi  y)-\gamma ^2 \pi ^2 y^{\alpha } \sin (\beta  \pi  x) \cos (\gamma  \pi  y)\\
+  f\left(x,y\right)&=&\beta^2\pi^2y^\alpha\sin\left(\beta\pi x\right)\cos\left(\gamma\pi y\right)-\alpha  (\alpha -1) y^{\alpha -2} \sin (\beta  \pi  x) \cos (\gamma  \pi  y)\\
+                   &&+2\alpha \gamma  \pi  y^{\alpha -1} \sin (\beta  \pi  x) \sin (\gamma  \pi  y)+\gamma ^2 \pi ^2 y^{\alpha } \sin (\beta  \pi  x) \cos (\gamma  \pi  y)
+\end{eqnarray*}
+
+\newpart
+%--------------------------
+%    Problem 1 Part D
+%--------------------------
+\subsection*{(d)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework3_1_d_1.m}
+\begin{tabular}{ccc}
+  case&$m$&\texttt{error}\\\hline
+  \begin{tabular}{r}
+    i)\\
+    ii)\\
+    iii)\\
+    iv)\\
+    v)\\
+  \end{tabular}&$\input{../Tables/poissonms.tex}$&$\input{../Tables/poissonerrors.tex}$
+\end{tabular}
+\begin{center}
+  \begin{tabular}{|>{\centering\arraybackslash}r|m{4.3cm}|m{4.3cm}|m{4.3cm}|}
+    \hline
+    case&right-hand side& actual & approximation\\\hline
+    i)&\includegraphics[width=\linewidth]{../Figures/poisson_rhs_1.png}&\includegraphics[width=\linewidth]{../Figures/poisson_actual_1.png}&\includegraphics[width=\linewidth]{../Figures/poisson_approx_1.png}\\\hline
+    ii)&\includegraphics[width=\linewidth]{../Figures/poisson_rhs_2.png}&\includegraphics[width=\linewidth]{../Figures/poisson_actual_2.png}&\includegraphics[width=\linewidth]{../Figures/poisson_approx_2.png}\\\hline
+    iii)&\includegraphics[width=\linewidth]{../Figures/poisson_rhs_3.png}&\includegraphics[width=\linewidth]{../Figures/poisson_actual_3.png}&\includegraphics[width=\linewidth]{../Figures/poisson_approx_3.png}\\\hline
+    iv)&\includegraphics[width=\linewidth]{../Figures/poisson_rhs_4.png}&\includegraphics[width=\linewidth]{../Figures/poisson_actual_4.png}&\includegraphics[width=\linewidth]{../Figures/poisson_approx_4.png}\\\hline
+    v)&\includegraphics[width=\linewidth]{../Figures/poisson_rhs_5.png}&\includegraphics[width=\linewidth]{../Figures/poisson_actual_5.png}&\includegraphics[width=\linewidth]{../Figures/poisson_approx_5.png}\\\hline
+  \end{tabular}
+\end{center}
+
+\newpage
+\newquestion
+%======================================================
+%
+%                    Problem 2
+%
+%======================================================
+\section*{Problem 2}
+
+\newpart
+%--------------------------
+%    Problem 2 Part A
+%--------------------------
+\subsection*{(a)}
+The centered-difference approximation for the partial difference equations has the form:
+\begin{eqnarray*}
+  \frac{2v_{j,k}-v_{j-1,k}-v_{j+1,k}}{h_x^2}+\frac{2v_{j,k}-v_{j,k-1}-v_{j,k+1}}{h_y^2}+\sigma v_{j,k}&=&f\left(x_j,y_k\right)\\
+  \frac{1}{h_x^2}T_{m_x}V+\frac{1}{h_y^2}VT_{m_y}-\frac{1}{h_x^2}B-\frac{1}{h_y^2}C+\sigma V&=&F\\
+  T_{m_x}V+\frac{h_x^2}{h_y^2}VT_{m_y}+h_x^2\sigma V&=&h_x^2\left(F+\frac{1}{h_x^2}B+\frac{1}{h_y^2}C\right)\\
+  T_{m_x}V+\alpha VT_{m_y}+\beta V&=&\tilde{F}
+\end{eqnarray*}
+where
+\begin{align*}
+  \alpha&=\left(\frac{h_x}{h_y}\right)^2&\beta&=h_x^2\sigma\\
+  \tilde{F}&=h_x^2\left(F+\frac{1}{h_x^2}B+\frac{1}{h_y^2}C\right)\\
+  B&=\left[
+  \begin{array}{cccc}
+    b_{01}&b_{02}&\cdots&b_{0m}\\
+    0&0&\cdots&0\\
+    \vdots&\vdots&&\vdots\\
+    0&0&\cdots&0\\
+    b_{11}&b_{12}&\cdots&b_{1m}\\
+  \end{array}
+  \right]\qquad &C&=\left[
+  \begin{array}{ccccc}
+    c_{01}&0&\cdots&0&c_{11}\\
+    c_{02}&0&\cdots&0&c_{12}\\
+    \vdots&\vdots&&\vdots&\vdots\\
+    c_{0m}&0&\cdots&0&c_{1m}\\
+  \end{array}
+  \right]\\
+  b_{0j}&=g\left(x_j,0\right)&c_{0k}&=g\left(0,y_k\right)\\
+  b_{1j}&=g\left(x_j,b\right)&c_{1k}&=g\left(a,y_k\right)
+\end{align*}
+
+\newpart
+%--------------------------
+%    Problem 2 Part B
+%--------------------------
+\subsection*{(b)}
+\begin{eqnarray*}
+  T_{m_x}V+\alpha VT_{m_y}+\beta V&=&\tilde{F}\\
+  Z_{m_x}^TT_{m_x}Z_{m_x}Z_{m_x}^TVZ_{m_y}+Z_{m_x}^TVZ_{m_y}Z_{m_y}^TVZ_{m_y}+\beta Z_{m_x}^TVZ_{m_y}&=&Z_{m_x}^T\tilde{F}Z_{m_y}^T\\
+  \Lambda_{m_x} V'+\alpha V'\Lambda_{m_y}+\beta V'&=&\tilde{F}'\\
+  \lambda_j v_{jk}'+\alpha v_{jk}'\lambda_k+\beta v_{jk}'&=&\tilde{f}_{jk}'\\
+  v_{jk}'&=&\frac{\tilde{f_{jk}}'}{\lambda_{j}+\alpha \lambda_k+\beta}\\
+  V&=&Z_{m_x}^TV'Z_{m_y}
+\end{eqnarray*}
+The number of flops would be of order $\mathcal{O}\left(m_xm_y\log\left(m_x\right)+m_ym_x\log\left(m_x\right)\right)=\mathcal{O}\left(m_xm_y\log\left(m_xm_y\right)\right)$.
+
+\newpage
+\newquestion
+%======================================================
+%
+%                    Problem 3
+%
+%======================================================
+\section*{Problem 3}
+Let $c=\left[c_0,c_1,c_2,\dots,c_{n-1}\right]^T$.
+The Frobenius norm can be written as
+\begin{eqnarray*}
+  \norm{C-T}_F&=&\textrm{trace}\left(\left(C-T\right)^T\left(C-T\right)\right)\\
+              &=&\textrm{trace}\left(\left(C^T-T^T\right)\left(C-T\right)\right)\\
+              &=&\textrm{trace}\left(C^TC-C^TT-T^TC-T^TT\right)
+\end{eqnarray*}
+Thus,
+\begin{eqnarray*}
+  P=\left[p_{ij}\right]_{i,j=0,\dots,n-1}&=&C^TC\\
+                              &=&\left[
+                                  \begin{array}{ccccc}
+                                    c_0&c_{n-1}&c_{n-2}&\cdots&c_1\\
+                                    c_1&c_0&c_{n-1}&\cdots&c_2\\
+                                    c_2&c_1&c_0&\cdots&c_3\\
+                                    \vdots&\vdots&\vdots&\ddots&\vdots\\
+                                    c_{n-1}&c_{n-2}&c_{n-3}&\cdots&c_0\\
+                                  \end{array}
+  \right]\left[
+  \begin{array}{ccccc}
+    c_0&c_1&c_2&\cdots&c_{n-1}\\
+    c_{n-1}&c_0&c_1&\cdots&c_{n-2}\\
+    c_{n-2}&c_{n-1}&c_0&\cdots&c_{n-3}\\
+    \vdots&\vdots&\vdots&\ddots&\vdots\\
+    c_1&c_2&c_3&\cdots&c_0\\
+  \end{array}
+  \right]\\
+  p_{ii}&=&c_i^2+c_{i-1}^2+\cdots+c_1^2+c_0^2+c_{n-1}^2+c_{n-2}^2+\cdots+c_{i+1}^2\\
+                              &=&c^Tc\\
+  \textrm{trace}\left(P\right)&=&\sum_{i=0}^{n-1}p_{ii}\\
+                              &=&nc^Tc
+\end{eqnarray*}
+\begin{eqnarray*}
+  Q=\left[q_{ij}\right]_{i,j=0,\dots,n-1}&=&C^TT\\
+                                         &=&\left[
+                                             \begin{array}{ccccc}
+                                               c_0&c_{n-1}&c_{n-2}&\cdots&c_1\\
+                                               c_1&c_0&c_{n-1}&\cdots&c_2\\
+                                               c_2&c_1&c_0&\cdots&c_3\\
+                                               \vdots&\vdots&\vdots&\ddots&\vdots\\
+                                               c_{n-1}&c_{n-2}&c_{n-3}&\cdots&c_0\\
+                                             \end{array}
+  \right]\left[
+  \begin{array}{ccccc}
+    t_0&t_1&t_2&\cdots&t_{n-1}\\
+    t_1&t_0&t_1&\cdots&t_{n-2}\\
+    t_2&t_1&t_0&\cdots&t_{n-3}\\
+    \vdots&\vdots&\vdots&\ddots&\vdots\\
+    t_{n-1}&t_{n-2}&t_{n-3}&\cdots&t_0\\
+  \end{array}
+  \right]\\
+  q_{ii}&=&c_it_i+c_{i-1}t_{i-1}+\cdots+c_1t_1+c_0t_0+c_{n-1}t_1+c_{n-2}t_2+\cdots+c_{i+1}t_{n-i-1}\\
+                                         &=&\sum_{k=0}^ic_{i-k}t_{i-k}+\sum_{k=1}^{n-i-1}c_{n-k}t_k\\
+  \textrm{trace}\left(Q\right)&=&\sum_{i=0}^{n-1}q_{ii}\\
+                                         &=&\sum_{i=0}^{n-1}\left(\sum_{k=0}^ic_{i-k}t_{i-k}+\sum_{k=1}^{n-i-1}c_{n-k}t_k\right)
+\end{eqnarray*}
+Similarly,
+\begin{eqnarray*}
+  R=\left[r_{ij}\right]_{i,j=0,\dots,n-1}&=&T^TC\\
+                                         &=&\left[
+                                             \begin{array}{ccccc}
+                                               t_0&t_1&t_2&\cdots&t_{n-1}\\
+                                               t_1&t_0&t_1&\cdots&t_{n-2}\\
+                                               t_2&t_1&t_0&\cdots&t_{n-3}\\
+                                               \vdots&\vdots&\vdots&\ddots&\vdots\\
+                                               t_{n-1}&t_{n-2}&t_{n-3}&\cdots&t_0\\
+                                             \end{array}
+  \right]\left[
+  \begin{array}{ccccc}
+    c_0&c_1&c_2&\cdots&c_{n-1}\\
+    c_{n-1}&c_0&c_1&\cdots&c_{n-2}\\
+    c_{n-2}&c_{n-1}&c_0&\cdots&c_{n-3}\\
+    \vdots&\vdots&\vdots&\ddots&\vdots\\
+    c_1&c_2&c_3&\cdots&c_0\\
+  \end{array}
+  \right]\\
+  r_{ii}&=&t_ic_i+t_{i-1}c_{i-1}+\cdots+t_1c_1+t_0c_0+t_1c_1+t_2c_2+\cdots+t_{n-i-1}c_{n-i-1}\\
+                                         &=&\sum_{k=0}^it_{i-k}c_{i-k}+\sum_{k=1}^{n-i-1}t_{k}c_k\\
+  \textrm{trace}\left(R\right)&=&\sum_{i=0}^{n-1}r_{ii}\\
+                                         &=&\sum_{i=0}^{n-1}\left(\sum_{k=0}^it_{i-k}c_{i-k}+\sum_{k=1}^{n-i-1}t_kc_k\right)
+\end{eqnarray*}
+Thus, $\textrm{trace}\left(Q\right)=\textrm{trace}\left(R\right)$. Let $\nabla=\left[\frac{\partial}{\partial c_1},\dots,\frac{\partial}{\partial c_{n-1}}\right]$. To minimize $\norm{C-T}_F$, set
+\begin{eqnarray*}
+  \left(\nabla\norm{C-T}_F\right)_{j}&=&\frac{\partial}{\partial c_j}\textrm{trace}\left(C^TC-C^TT-T^TC-T^TT\right)\\
+                                     &=&\frac{\partial}{\partial c_j}\left[\sum_{k=0}^{n-1}c_k^2-2\sum_{i=0}^{n-1}\left(\sum_{k=0}^ic_{i-k}t_{i-k}+\sum_{k=1}^{n-i-1}c_{n-k}t_k\right)\right]\\
+                                     &=&2nc_j-2\left[\left(n-j\right)t_j+jt_{n-j}\right]\\
+                                     &=&0\\
+  c_j&=&\frac{1}{n}\left[\left(n-j\right)t_j+jt_{n-j}\right]
+\end{eqnarray*}
+Since there is only one solution to $\nabla\norm{C-T}_F=0$, then $C_T$ is unique. Also, since
+\begin{eqnarray*}
+  c_{n-j}&=&\frac{1}{n}\left[\left(n-\left(n-j\right)\right)t_{n-j}+\left(n-j\right)t_{n-\left(n-j\right)}\right]\\
+     &=&\frac{1}{n}\left[jt_{n-j}+\left(n-j\right)t_j\right]\\
+     &=&c_j,
+\end{eqnarray*}
+then $c_j$ is symmetric.
+
+\newpage
+\newquestion
+%======================================================
+%
+%                    Problem 4
+%
+%======================================================
+\section*{Problem 4}
+
+\newpart
+%--------------------------
+%    Problem 4 Part A
+%--------------------------
+\subsection*{(a)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/toeplitzpcg.m}
+
+\newpart
+%--------------------------
+%    Problem 4 Part B
+%--------------------------
+\subsection*{(b)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/toeplitzpcgcirc.m}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 4 Part C
+%--------------------------
+\subsection*{(c)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework3_4_c_1.m}
+\newpage
+For $n=10$, the output is,
+
+\begin{tabular}{c|c|c}
+  $p=1$&$p=0.1$&$p=0.01$\\\hline
+  \multicolumn{3}{c}{without preconditioning}\\\hline
+  $\left[\input{../Tables/pcg_100.tex}\right]$&$\left[\input{../Tables/pcg_010.tex}\right]$&$\left[\input{../Tables/pcg_001.tex}\right]$\\\hline
+  \multicolumn{3}{c}{with preconditioning}\\\hline
+  $\left[\input{../Tables/pcgcirc_100.tex}\right]$&$\left[\input{../Tables/pcgcirc_010.tex}\right]$&$\left[\input{../Tables/pcgcirc_001.tex}\right]$\\
+\end{tabular}
+
+For $n=100$, the output is,
+
+\begin{tabular}{c|c|c}
+  &$p=1$&$p=0.1$\\\hline
+  \multicolumn{3}{c}{without preconditioning}\\\hline
+  $\left[
+  \begin{array}{c}
+    x(1)\\
+    x(100000)\\
+    x(500000)\\
+    x(700000)\\
+    x(1000000)
+  \end{array}
+  \right]$&$\left[\input{../Tables/pcglarge_100.tex}\right]$&$\left[\input{../Tables/pcglarge_010.tex}\right]$\\\hline
+  \multicolumn{3}{c}{with preconditioning}\\\hline
+  $\left[\begin{array}{c}
+           x(1)\\
+           x(100000)\\
+           x(500000)\\
+           x(700000)\\
+           x(1000000)
+         \end{array}
+  \right]$&$\left[\input{../Tables/pcgcirclarge_100.tex}\right]$&$\left[\input{../Tables/pcgcirclarge_010.tex}\right]$\\
+\end{tabular}
+
+\newpage
+\newquestion
+%======================================================
+%
+%                    Problem 5
+%
+%======================================================
+\section*{Problem 5}
+
+\newpart
+%--------------------------
+%    Problem 5 Part A
+%--------------------------
+\subsection*{(a)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/get_lower.m}
+
+\newpart
+%--------------------------
+%    Problem 5 Part B
+%--------------------------
+\subsection*{(b)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/iCholesky.m}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 5 Part C
+%--------------------------
+\subsection*{(c)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solve_lower.m}
+
+\newpart
+%--------------------------
+%    Problem 5 Part D
+%--------------------------
+\subsection*{(d)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solve_lowert.m}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 5 Part E
+%--------------------------
+\subsection*{(e)}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework3_5_e_1.m}
+
+\newpage
+The small matrix had the following output.
+
+\begin{tabular}{c|c|c}
+  &without preconditioning & with preconditioning\\\hline
+  iterations&\input{../Tables/snoconditer.tex}&\input{../Tables/sconditer.tex}\\\hline
+  $\frac{\norm{Ax-b}_2}{\norm{b_2}}$&\texttt{\input{../Tables/snocondnorm.tex}}&\texttt{\input{../Tables/scondnorm.tex}}\\\hline
+  $x$ & $\left[\input{../Tables/snocond.tex}\right]$ & $\left[\input{../Tables/scond.tex}\right]$
+\end{tabular}
+\newpage
+The vectors $J$, $I$, and $V_L$ correspond to the CSC format of the incomplete Cholesky factorization of $A$ and were reshaped to fit onto the page.
+\begin{eqnarray*}
+  J&=&\left[\input{../Tables/scondJ.tex}\right]\qquad I=\left[\input{../Tables/scondI.tex}\right]\\
+  V_L&=&\left[\input{../Tables/scondV.tex}\right]
+\end{eqnarray*}
+\newpage
+The large matrix had the following output where $J$, $I$, and $V_L$ correspond to CSC format of the the incoomplete Cholesky factorization.
+
+\begin{tabular}{c|c|c}
+  &without preconditioning & with preconditioning\\\hline
+  iterations&\input{../Tables/lnoconditer.tex}&\input{../Tables/lconditer.tex}\\\hline
+  $
+  \begin{array}{c}
+          x\left(1\right)\\
+          x\left(10000\right)\\
+          x\left(100000\right)\\
+          x\left(200000\right)\\
+          x\left(262144\right)\\
+  \end{array}$ & $\input{../Tables/lnocond.tex}$ & $\input{../Tables/lcond.tex}$
+\end{tabular}
+
+\begin{tabular}{c|c|c|c}
+  index & $J$ & $I$ & $V_L$\\\hline
+  $
+  \begin{array}{r}
+    1\\
+    10\\
+    100\\
+    1000\\
+    \texttt{end}
+  \end{array}
+$ & $\input{../Tables/lcondJ.tex}$ & $\input{../Tables/lcondI.tex}$ & $\input{../Tables/lcondVL.tex}$
+\end{tabular}
+
+\end{document}
+%================================================================
+%================================================================
+%
+%                           Templates
+%
+%================================================================
+%================================================================
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+\newquestion
+%======================================================
+%
+%                    Problem n
+%
+%======================================================
+\section*{Problem n}
+
+\newpart
+%--------------------------
+%    Problem n Part A
+%--------------------------
+\subsection*{(a)}
+
+\newpart
+%--------------------------
+%    Problem n Part B
+%--------------------------
+\subsection*{(b)}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+%======================================================
+%
+%               Appendix: Problem n
+%
+%======================================================
+%--------------------------
+%  Appendix: P n Part A
+%--------------------------
+\subsection*{Problem n Part A}
+
+\newpage
+%--------------------------
+%  Appendix: P n Part B
+%--------------------------
+\subsection*{Problem n Part B}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------

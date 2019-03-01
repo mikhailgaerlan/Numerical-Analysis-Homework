@@ -1,0 +1,34 @@
+clearvars; clc; m = 6; nmax = 300; tol = 1e-6;
+as=2/5;bs=1/5;alpha=0;beta=1;gamma=1/2;
+
+rectangle1_x1=0;rectangle1_x2=1; rectangle1_y1=0; rectangle1_y2=3;
+rectangle2_x1=as;rectangle2_x2=as+4;rectangle2_y1=bs; rectangle2_y2=bs+1;
+rectangle1_m1 = 1*2^m+1; rectangle1_m2 = 3*2^m+1;
+rectangle2_m1 = 4*2^m+1; rectangle2_m2 = 1*2^m+1;
+A1_m = rectangle1_m1*rectangle1_m2; A2_m = rectangle2_m1*rectangle2_m2;
+
+h = 1/2^m;
+
+[X1,Y1]=meshgrid(...
+    rectangle1_x1:h:rectangle1_x2,...
+    rectangle1_y1:h:rectangle1_y2);
+[X2,Y2]=meshgrid(...
+    rectangle2_x1:h:rectangle2_x2,...
+    rectangle2_y1:h:rectangle2_y2);
+X1_reshape = reshape(X1,[A1_m,1]); Y1_reshape = reshape(Y1,[A1_m,1]);
+X2_reshape = reshape(X2,[A2_m,1]); Y2_reshape = reshape(Y2,[A2_m,1]);
+
+vact = v([X1_reshape;X2_reshape],[Y1_reshape;Y2_reshape],alpha,beta,gamma);
+
+[vapp,X,Y,k] = alt_Schwarz(m,nmax,as,bs,tol,@(x,y)f(x,y,alpha,beta,gamma),@(x,y)v(x,y,alpha,beta,gamma));
+
+figure(1);scatter3(X,Y,vapp,'o','CData',vapp)
+figure(2);scatter3([X1_reshape;X2_reshape],[Y1_reshape;Y2_reshape],vact,'o','CData',vact)
+
+function true = v(x,y,a,b,g); true=y.^a.*sin(b.*pi.*x).*cos(g.*pi.*y); end
+function fun = f(x,y,a,b,g)
+fun = b.^2.*pi.^2.*y.^a.*sin(b.*pi.*x).*cos(g.*pi.*y)...
+    -a.*(a-1).*y.^(a-2).*sin(b.*pi.*x).*cos(g.*pi.*y)...
+    +2.*a.*g.*pi.*y.^(a-1).*sin(b.*pi.*x).*sin(g.*pi.*y)...
+    +g.^2.*pi.^2.*y.^a.*sin(b.*pi.*x).*cos(g.*pi.*y);
+end

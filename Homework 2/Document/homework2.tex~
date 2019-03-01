@@ -1,0 +1,787 @@
+\documentclass[11pt]{article}
+
+%================================================================
+%================================================================
+%
+%                           Preamble
+%
+%================================================================
+%================================================================
+
+%======================================================
+%
+%                      Packages
+%
+%======================================================
+
+\usepackage[margin=1in]{geometry}  % set the margins to 1in
+\usepackage{graphicx}              % to include figures
+\usepackage{amsmath}               % great math stuff
+\usepackage{amsfonts}              % for blackboard bold, etc
+\usepackage{amsthm}                % better theorem environments
+\usepackage{titlesec}              % format section titles
+
+\usepackage{soul}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage[makeroom]{cancel}
+\usepackage{xcolor}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{tikz}
+\usepackage{setspace}
+\usepackage{pdfpages}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{xspace}
+
+\usepackage{amssymb}
+\usepackage{parskip}
+\usepackage{color}
+\usepackage[hyphens]{url}
+\usepackage{latexsym}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{algpseudocode}
+\usepackage{verbatim}
+\usepackage{collectbox}
+\usepackage{scrextend}
+\usepackage{array}
+\usetikzlibrary{arrows.meta,shapes,calc}
+
+\DeclareMathOperator{\id}{id}
+
+%======================================================
+%
+%                   New Commands
+%
+%======================================================
+
+\newcommand{\bd}[1]{\mathbf{#1}}  % for bolding symbols
+\newcommand{\RR}{\mathbb{R}}      % for Real numbers
+\newcommand{\ZZ}{\mathbb{Z}}      % for Integers
+\newcommand{\col}[1]{\left[\begin{matrix} #1 \end{matrix} \right]}
+\newcommand{\comb}[2]{\binom{#1^2 + #2^2}{#1+#2}}
+\newcommand{\overfrac}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
+
+\newcommand{\numdash}{\nobreakdash--}
+\newcommand{\blank}[1]{\underline{\hspace{#1}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\B}{\ensuremath{\mathbb{B}}}
+\newcommand{\T}{\ensuremath{\mathbb{T}}}
+\newcommand{\Tau}{\ensuremath{\mathcal{T}}}
+\newcommand{\HS}{\ensuremath{\mathcal{H}}}
+\newcommand{\intom}{\ensuremath{\int_{\Omega}}}
+\newcommand{\fa}{\ensuremath{\ \forall\ }}
+\newcommand{\ex}{\ensuremath{\ \exists\ }}
+\newcommand{\idty}{{\mathchoice {\rm 1\mskip-4mu l} {\rm 1\mskip-4mu l} %
+    {\rm 1\mskip-4.5mu l} {\rm 1\mskip-5mu l}}}
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{corollary}[proposition]{Corollary}
+\newtheorem{conjecture}[proposition]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[proposition]{Definition}
+\newtheorem{example}[proposition]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\newtheorem{claim}[proposition]{Claim}
+\newtheorem{notation}[proposition]{Notation}
+
+\def\Xint#1{\mathchoice
+	{\XXint\displaystyle\textstyle{#1}}%
+	{\XXint\textstyle\scriptstyle{#1}}%
+	{\XXint\scriptstyle\scriptscriptstyle{#1}}%
+	{\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+	\!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$ }
+		\vcenter{\hbox{$#2#3$ }}\kern-.6\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+\makeatletter
+\newcommand{\mybox}{%
+	\collectbox{%
+		\setlength{\fboxsep}{1pt}%
+		\fbox{\BOXCONTENT}%
+	}%
+}
+\makeatother
+
+\newcommand{\newquestion}{\hrulefill\vspace{-0.8\baselineskip}\\\null\hrulefill\vspace{-1.0\baselineskip}}
+\newcommand{\newpart}{\vspace{-0.5\baselineskip}\hrulefill\vspace{-1.3\baselineskip}}
+
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\krnl}{ker}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\image}{im}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\LCM}{LCM}
+\DeclareMathOperator{\HCF}{HCF}
+
+%\numberwithin{equation}{chapter}
+
+%======================================================
+%
+%                   Format Specifications
+%
+%======================================================
+
+\everymath{\displaystyle}
+\setlength\parindent{0pt}
+\titleformat{\section}{\normalfont}{\thesection}{}{}
+\titleformat{\subsection}{\normalfont}{\thesubsection}{}{}
+\titleformat{\subsubsection}{\normalfont}{\thesubsubsection}{}{}
+\theoremstyle{plain}
+
+\lstset{
+  numbers=left,
+  numberstyle=\scriptsize,
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single
+}
+
+%================================================================
+%================================================================
+%
+%                          Homework #
+%
+%================================================================
+%================================================================
+\begin{document}
+  \begin{flushright}
+    Mikhail Gaerlan\\
+    6 February 2018\\
+    MAT 226B Freund
+  \end{flushright}
+\vspace{-1.3\baselineskip}
+
+
+\newquestion
+%======================================================
+%
+%                    Problem 1
+%
+%======================================================
+\section*{Problem 1}
+
+\newpart
+%--------------------------
+%    Problem 1 Part A
+%--------------------------
+\subsection*{(a)}
+The following code was used to factor the 2D Laplacian:
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_1_a_1.m}
+The number of nonzero entries are shown in the following vector:
+\begin{equation*}
+  \left[
+    \begin{array}{c}
+      \textrm{No reordering}\\
+      \texttt{symamd}\\
+      \texttt{colamd}\\
+      \texttt{symrcm}\\
+      \texttt{colperm}
+    \end{array}
+  \right]=
+  \left[\input{../Tables/nnzs.tex}\right].
+\end{equation*}
+\newpage
+The following table shows the output of \texttt{spy(L)}:
+
+\begin{tabular}{|c|c|}
+  \hline
+  \multicolumn{2}{|c|}{\includegraphics[width=0.45\linewidth]{../Figures/default.png}}\\\hline
+  \includegraphics[width=0.45\linewidth]{../Figures/symamd.png}&\includegraphics[width=0.45\linewidth]{../Figures/colamd.png}\\\hline
+  \includegraphics[width=0.45\linewidth]{../Figures/symrcm.png}&\includegraphics[width=0.45\linewidth]{../Figures/colperm.png}\\\hline
+\end{tabular}
+
+Using the following code, my computer ran out of storage after $i=\input{../Tables/i.tex}$.
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_1_a_2.m}
+\newpage
+
+\newpart
+%--------------------------
+%    Problem 1 Part B
+%--------------------------
+\subsection*{(b)}
+
+The following code was used to factor the 3D Laplacian:
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_1_b_1.m}
+The number of nonzero entries are shown in the following vector:
+\begin{equation*}
+  \left[
+    \begin{array}{c}
+      \textrm{No reordering}\\
+      \texttt{symamd}\\
+      \texttt{colamd}\\
+      \texttt{symrcm}\\
+      \texttt{colperm}
+    \end{array}
+  \right]=
+  \left[\input{../Tables/nnzsb.tex}\right].
+\end{equation*}
+\newpage
+The following table shows the output of \texttt{spy(L)}:
+
+\begin{tabular}{|c|c|}
+  \hline
+  \multicolumn{2}{|c|}{\includegraphics[width=0.45\linewidth]{../Figures/default.png}}\\\hline
+  \includegraphics[width=0.45\linewidth]{../Figures/symamdb.png}&\includegraphics[width=0.45\linewidth]{../Figures/colamdb.png}\\\hline
+  \includegraphics[width=0.45\linewidth]{../Figures/symrcmb.png}&\includegraphics[width=0.45\linewidth]{../Figures/colpermb.png}\\\hline
+\end{tabular}
+
+Using the following code, my computer ran out of storage after $i=\input{../Tables/ib.tex}$.
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_1_b_2.m}
+\newpage
+
+\newquestion
+%======================================================
+%
+%                    Problem 2
+%
+%======================================================
+\section*{Problem 2}
+
+\newpart
+%--------------------------
+%    Problem 2 Part A
+%--------------------------
+\subsection*{(a)}
+\begin{center}
+  \begin{tikzpicture}
+    \tikzset{vertex/.style = {shape=circle,draw,minimum size=2em}}
+    \tikzset{edge/.style = {-}}
+    
+    % vertices
+    \foreach \x in {1,...,9}
+    {
+      \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+      %\draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+    }
+    
+    % edges
+    \foreach \y in {4,9} {\draw[edge] (1) to (\y);}
+    \foreach \y in {4,5,6,7} {\draw[edge] (2) to (\y);}
+    \foreach \y in {8} {\draw[edge] (3) to (\y);}
+    \foreach \y in {6} {\draw[edge] (4) to (\y);}
+    \foreach \y in {8} {\draw[edge] (5) to (\y);}
+    \foreach \y in {7,9} {\draw[edge] (6) to (\y);}
+    \foreach \y in {8} {\draw[edge] (7) to (\y);}
+    
+  \end{tikzpicture}
+\end{center}
+\newpart
+%--------------------------
+%    Problem 2 Part B
+%--------------------------
+\subsection*{(b)}
+Since $a_{9,1}\neq0,a_{4,1}\neq0,a_{9,4}=0$, fill-in element at $a_{9,4}$. Thus, the algorithm goes as follows
+\begin{tabular}{m{1.2cm}m{3cm}| >{\centering\arraybackslash}l}\hline
+  Step 0: & Fill-in step\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {1,...,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            
+            % edges
+            \foreach \y in {4,9} {\draw[edge] (1) to (\y);}
+            \foreach \y in {4,5,6,7} {\draw[edge] (2) to (\y);}
+            \foreach \y in {8} {\draw[edge] (3) to (\y);}
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {8} {\draw[edge] (5) to (\y);}
+            \foreach \y in {7,9} {\draw[edge] (6) to (\y);}
+            \foreach \y in {8} {\draw[edge] (7) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        1/2&1/4&1&1/4&1/2&1/4&1/3&1/3&1/3
+                                      \end{array}
+                                                                      \right]$\\\hline
+  Step 1: & Eliminate node 3. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                      3
+                                    \end{array}
+                                \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {1,2,4,5,6,7,8,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {4,9} {\draw[edge] (1) to (\y);}
+            \foreach \y in {4,5,6,7} {\draw[edge] (2) to (\y);}
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {8} {\draw[edge] (5) to (\y);}
+            \foreach \y in {7,9} {\draw[edge] (6) to (\y);}
+            \foreach \y in {8} {\draw[edge] (7) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        1/2&1/4&*&1/4&1/2&1/4&1/3&1/2&1/3
+                                      \end{array}
+                                                                      \right]$\\\hline
+  Step 2: & Eliminate node 1. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                      3 & 1
+                                    \end{array}
+                                          \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {2,4,5,6,7,8,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3,1}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {4,5,6,7} {\draw[edge] (2) to (\y);}
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {8} {\draw[edge] (5) to (\y);}
+            \foreach \y in {7,9} {\draw[edge] (6) to (\y);}
+            \foreach \y in {8} {\draw[edge] (7) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        *&1/4&*&1/3&1/2&1/4&1/3&1/2&1/2
+                                      \end{array}
+                                                                    \right]$\\
+\end{tabular}\newpage
+\begin{tabular}{m{1.2cm}m{3cm}| >{\centering\arraybackslash}l}\hline
+  Step 3: & Eliminate node 5. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                           3 & 1 & 5
+                                         \end{array}
+                                                   \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {2,4,6,7,8,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3,1,5}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {4,6,7} {\draw[edge] (2) to (\y);}
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {7,9} {\draw[edge] (6) to (\y);}
+            \foreach \y in {8} {\draw[edge] (7) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        *&1/3&*&1/3&*&1/4&1/3&1&1/2
+                                      \end{array}
+                                                                 \right]$\\\hline
+  Step 4: & Eliminate node 8. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                           3 & 1 & 5 & 8
+                                         \end{array}
+                                                       \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {2,4,6,7,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3,1,5,8}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {4,6,7} {\draw[edge] (2) to (\y);}
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {7,9} {\draw[edge] (6) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        *&1/3&*&1/3&*&1/4&1/2&*&1/2
+                                      \end{array}
+                                                                 \right]$\\\hline
+  Step 5: & Eliminate node 7. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                           3 & 1 & 5 & 8 & 7
+                                         \end{array}
+                                                           \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {2,4,6,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3,1,5,8,7}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {4,6} {\draw[edge] (2) to (\y);}
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {9} {\draw[edge] (6) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        *&1/2&*&1/3&*&1/3&*&*&1/2
+                                      \end{array}
+                                                               \right]$\\\hline
+  Step 6: & Eliminate node 2. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                           3 & 1 & 5 & 8 & 7 & 2
+                                         \end{array}
+                                                           \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {4,6,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3,1,5,8,7,2}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {6,9} {\draw[edge] (4) to (\y);}
+            \foreach \y in {9} {\draw[edge] (6) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        *&*&*&1/2&*&1/2&*&*&1/2
+                                      \end{array}
+                                                             \right]$\\\hline
+  Step 7: & Eliminate node 4. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                           3 & 1 & 5 & 8 & 7 & 2 & 4
+                                         \end{array}
+                                                           \right]$\\
+          &\begin{tikzpicture}[scale=0.4]
+            \tikzset{vertex/.style = {}}
+            \tikzset{edge/.style = {-}}
+            
+            % vertices
+            \foreach \x in {6,9}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {\x};
+              % \draw[edge] (\x) to[in=115+360*\x/9-360/9,out=65+360*\x/9-360/9,loop] (\x);
+            }
+            \foreach \x in {3,1,5,8,7,2,4}
+            {
+              \node[vertex] (\x) at ({2.8*cos(90+360*(\x-1)/9)},{2.8*sin(90+360*(\x-1)/9)}) {};
+            }
+            
+            % edges
+            \foreach \y in {9} {\draw[edge] (6) to (\y);}
+            
+          \end{tikzpicture}&
+                             $d=\left[\begin{array}{ccccccccc}
+                                        *&*&*&*&*&1&*&*&1
+                                      \end{array}
+                                                         \right]$\\\hline
+  Step 8: & Eliminate node 6. &
+                                $p=\left[\begin{array}{ccccccccc}
+                                           3 & 1 & 5 & 8 & 7 & 2 & 4 & 6
+                                         \end{array}
+                                                           \right]$\\
+          &\\\hline
+  Final: & Eliminate node 9. &
+                               $p=\left[\begin{array}{ccccccccc}
+                                          3 & 1 & 5 & 8 & 7 & 2 & 4 & 6 & 9
+                                        \end{array}
+                                                                          \right]$\\
+\end{tabular}\newpage
+
+\newpart
+%--------------------------
+%    Problem 2 Part C
+%--------------------------
+\subsection*{(c)}
+\begin{equation*}
+  A=\left[
+    \begin{array}{ccccccccc}
+      *&0&0&*&0&0&0&0&0\\
+      0&*&0&0&0&0&*&0&*\\
+      0&0&*&*&0&*&0&0&0\\
+      *&0&*&*&*&0&0&0&0\\
+      0&0&0&*&*&*&0&*&0\\
+      0&0&*&0&*&*&*&*&0\\
+      0&*&0&0&0&*&*&*&0\\
+      0&0&0&0&*&*&*&*&*\\
+      0&*&0&0&0&0&0&*&*
+    \end{array}\right]
+\end{equation*}
+
+\newquestion
+%======================================================
+%
+%                    Problem 3
+%
+%======================================================
+\section*{Problem 3}
+
+\newpart
+%--------------------------
+%    Problem 3 Part A
+%--------------------------
+\subsection*{(a)}
+There would be 17 fill-in elements in positions $u_{2,1}$, $u_{2,2}$, $u_{2,4}$, $u_{4,1}$, $u_{4,2}$, $u_{4,4}$, $u_{5,1}$, $u_{5,2}$, $u_{5,4}$, $u_{7,1}$, $u_{7,4}$, $u_{10,1}$, $u_{10,2}$, $u_{10,4}$, $u_{11,1}$, $u_{11,2}$, $u_{11,4}$.
+
+\newpart
+%--------------------------
+%    Problem 3 Part B
+%--------------------------
+\subsection*{(b)}
+There would be a pivot at $u_{2,11}$. After the pivot,
+\begin{equation*}
+  U^{(k)}=\left[
+    \begin{array}{ccccccccccc}
+      *&0&0&0&0&0&0&0&0&0&*\\
+      0&*&*&0&*&0&0&0&0&0&*\\
+      0&0&0&*&*&0&0&0&*&*&0\\
+      0&0&0&0&0&*&0&0&*&0&*\\
+      0&0&0&0&0&0&*&*&0&0&*\\
+      *&0&0&*&0&0&0&0&0&*&0\\
+      0&0&*&*&0&*&0&0&0&*&*\\
+      0&*&0&0&0&*&0&0&0&*&0\\
+      0&0&0&0&0&0&*&*&0&*&0\\
+      0&0&0&*&0&0&0&*&0&0&*\\
+      *&0&0&0&0&*&0&0&0&0&*
+    \end{array}\right],
+\end{equation*}
+so there would only be one pivot at $u_{5,11}$.
+
+\newquestion
+%======================================================
+%
+%                    Problem 4
+%
+%======================================================
+\section*{Problem 4}
+
+\newpart
+%--------------------------
+%    Problem 4 Part A
+%--------------------------
+\subsection*{(a)}
+The following function was used to find the $J$,$I$, and $V_L$ matrix for the compressed sparse column format for a lower-triangular matrix
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/comp_l_tri.m}
+The following code was used on the \texttt{small\_ex.mat} example
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_4_a_1.m}
+and the following code was used for the \texttt{large\_ex.mat} example
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_4_a_2.m}
+The output for the \texttt{small\_ex.mat} example is
+\begin{equation*}
+  J=\left[\input{../Tables/smallexj.tex}\right],\quad I=\left[\input{../Tables/smallexi.tex}\right],\quad V_L=\left[\input{../Tables/smallexv.tex}\right]
+\end{equation*}
+and \texttt{large\_ex.mat} example is
+\begin{equation*}
+  \left[
+    \begin{array}{r}
+      I(50000)\\
+      I(100000)\\
+      I(150000)\\
+      I(200000)\\
+      I(250000)
+    \end{array}
+  \right]=\left[\input{../Tables/largeex.tex}\right].
+\end{equation*}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 4 Part B
+%--------------------------
+\subsection*{(b)}
+
+The following function was used to find the $J$,$I$, and $V_L$ matrix for the compressed sparse column format for an upper-triangular matrix
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/comp_u_tri.m}
+The following code was used on the \texttt{small\_ex.mat} example
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_4_b_1.m}
+and the following code was used for the \texttt{large\_ex.mat} example
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_4_b_2.m}
+The output for the \texttt{small\_ex.mat} example is
+\begin{equation*}
+  J=\left[\input{../Tables/smallexuj.tex}\right],\quad I=\left[\input{../Tables/smallexui.tex}\right],\quad V_L=\left[\input{../Tables/smallexuv.tex}\right]
+\end{equation*}
+and \texttt{large\_ex.mat} example is
+\begin{equation*}
+  \left[
+    \begin{array}{r}
+      I(50000)\\
+      I(100000)\\
+      I(150000)\\
+      I(200000)\\
+      I(250000)
+    \end{array}
+  \right]=\left[\input{../Tables/largeexu.tex}\right].
+\end{equation*}
+
+\newpage
+\newpart
+%--------------------------
+%    Problem 4 Part C
+%--------------------------
+\subsection*{(c)}
+The following functions were written to solve the equations $Lc=b$ and $Ux=c$ respectively
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solve_l.m}
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/solve_u.m}
+The following code was used on the \texttt{small\_ex.mat} example
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_4_c_1.m}
+and the following code was used for the \texttt{large\_ex.mat} example
+\lstinputlisting[style=Matlab-editor,basicstyle=\ttfamily\small]{../Code/homework2_4_c_2.m}
+The output for the \texttt{small\_ex.mat} example is
+\begin{equation*}
+  x=\left[\input{../Tables/smallexsolve.tex}\right]
+\end{equation*}
+and \texttt{large\_ex.mat} example is
+\begin{equation*}
+  \left[
+    \begin{array}{r}
+      x(50000)\\
+      x(100000)\\
+      x(150000)\\
+      x(200000)\\
+      x(250000)
+    \end{array}
+  \right]=\left[\input{../Tables/largeexsolve.tex}\right].
+\end{equation*}
+
+\newquestion
+%======================================================
+%
+%                    Problem 5
+%
+%======================================================
+\section*{Problem 5}
+
+\newpart
+%--------------------------
+%    Problem 5 Part i
+%--------------------------
+\subsection*{(i)}
+
+\newpart
+%--------------------------
+%    Problem 5 Part ii
+%--------------------------
+\subsection*{(ii)}
+
+\newpart
+%--------------------------
+%    Problem 5 Part iii
+%--------------------------
+\subsection*{(iii)}
+
+
+\end{document}
+%================================================================
+%================================================================
+%
+%                           Templates
+%
+%================================================================
+%================================================================
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+\newquestion
+%======================================================
+%
+%                    Problem n
+%
+%======================================================
+\section*{Problem n}
+
+\newpart
+%--------------------------
+%    Problem n Part A
+%--------------------------
+\subsection*{(a)}
+
+\newpart
+%--------------------------
+%    Problem n Part B
+%--------------------------
+\subsection*{(b)}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------
+
+
+%======================================================
+%
+%               Appendix: Problem n
+%
+%======================================================
+%--------------------------
+%  Appendix: P n Part A
+%--------------------------
+\subsection*{Problem n Part A}
+
+\newpage
+%--------------------------
+%  Appendix: P n Part B
+%--------------------------
+\subsection*{Problem n Part B}
+
+
+%----------------------------------------------------------------
+%----------------------------------------------------------------

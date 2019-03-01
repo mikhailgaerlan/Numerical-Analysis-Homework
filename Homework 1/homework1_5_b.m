@@ -1,0 +1,9 @@
+format long e;
+c = [2,-1,0,-3];
+C = [2,-1,0,-3;...
+    -3,2,-1,0;...
+    0,-3,2,-1;...
+    -1,0,-3,2];
+x = [-1,2,1,4]';
+matrix2latex(C*x,'Cx.tex','alignment','r','format','%-.15e')
+matrix2latex(circulant(c,x),'circulantx.tex','alignment','r','format','%-.15e')
